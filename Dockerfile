@@ -1,5 +1,5 @@
-# Use an official PHP image with FPM as the base
-FROM php:8.2-fpm
+# Use PHP 8.4 (matches your composer.lock requirements)
+FROM php:8.4-fpm
 
 # Install system dependencies and Node.js
 RUN apt-get update && apt-get install -y \
@@ -19,10 +19,10 @@ WORKDIR /var/www
 # Copy application files
 COPY . .
 
-# Install PHP dependencies
+# Install PHP dependencies (now with PHP 8.4 available)
 RUN composer install --no-dev --optimize-autoloader
 
-# Install Node dependencies and build assets (this step now has PHP available)
+# Install Node dependencies and build assets (PHP is available for Wayfinder)
 RUN npm install && npm run build
 
 # Set permissions
