@@ -1,11 +1,11 @@
-# Use PHP 8.4 (matches your composer.lock requirements)
 FROM php:8.4-fpm
 
-# Install system dependencies and Node.js
+# Install system dependencies, Nginx, and Node.js
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
+    git curl zip unzip nginx libpng-dev libonig-dev libxml2-dev libzip-dev \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
@@ -13,17 +13,18 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
 WORKDIR /var/www
-
-# Copy application files
 COPY . .
 
-# Install PHP dependencies (now with PHP 8.4 available)
 RUN composer install --no-dev --optimize-autoloader
-
-# Install Node dependencies and build assets (PHP is available for Wayfinder)
 RUN npm install && npm run build
 
-# Set permissions
+# Copy nginx config + startup script
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
+EXPOSE 8080
+CMD ["/usr/local/bin/start.sh"]
