@@ -26,5 +26,10 @@ RUN chmod +x /usr/local/bin/start.sh
 
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
+# Create SQLite DB if it doesn't exist and fix ownership
+RUN touch /var/www/database/database.sqlite \
+    && chown -R www-data:www-data /var/www/database \
+    && chmod -R 775 /var/www/database
+
 EXPOSE 8080
 CMD ["/usr/local/bin/start.sh"]

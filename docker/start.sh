@@ -1,20 +1,20 @@
 #!/bin/sh
 set -e
 
-# Use Render's assigned port, default to 8080 locally
 PORT="${PORT:-8080}"
-
-# Inject the port into nginx config
 sed -i "s/__PORT__/${PORT}/" /etc/nginx/nginx.conf
 
-# Laravel runtime setup
+# Make sure runtime dirs are writable by PHP-FPM user
+mkdir -p /run/php
+chown -R www-data:www-data /run/php /var/www/storage /var/www/bootstrap/cache /var/www/database
+chmod -R 775 /var/www/storage /var/www/bootstrap/cache /var/www/database
+
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
-php artisan migrate --force
 
-# Start PHP-FPM in background
+# Run migrations as www-data
+su -s /bin/sh www-data -c "php artisan migrate --force"
+
 php-fpm -D
-
-# Start Nginx in foreground (keeps container alive)
 nginx -g "daemon off;"
