@@ -1,5 +1,6 @@
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import type { FormEvent } from 'react';
+import type { SharedData } from '@/types';
 import {
     ArrowLeftIcon,
     ArrowRightIcon,
@@ -10,6 +11,7 @@ import {
 import { Alert, Button, Field, TextInput } from '@/components/admin/ui';
 
 export default function AdminLogin({ status }: { status?: string | null }) {
+    const { siteUrl } = usePage<SharedData>().props;
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -36,7 +38,10 @@ export default function AdminLogin({ status }: { status?: string | null }) {
 
             <div className="relative mx-auto grid min-h-screen max-w-7xl lg:grid-cols-[1.05fr_0.95fr]">
                 <section className="hidden flex-col justify-between border-r border-white/10 p-12 lg:flex xl:p-16">
-                    <Link href="/" className="flex w-fit items-center gap-3">
+                    <Link
+                        href={siteUrl}
+                        className="flex w-fit items-center gap-3"
+                    >
                         <span className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-400/30 bg-emerald-400/10 text-sm font-semibold text-emerald-300">
                             HS
                             <span className="absolute -right-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#05080f] bg-emerald-400" />
@@ -96,7 +101,7 @@ export default function AdminLogin({ status }: { status?: string | null }) {
                 <section className="flex items-center justify-center p-5 sm:p-8 lg:p-12">
                     <div className="w-full max-w-md">
                         <Link
-                            href="/"
+                            href={siteUrl}
                             className="mb-8 flex w-fit items-center gap-3 lg:hidden"
                         >
                             <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-400/30 bg-emerald-400/10 text-sm font-semibold text-emerald-300">
@@ -204,7 +209,7 @@ export default function AdminLogin({ status }: { status?: string | null }) {
 
                         <div className="mt-6 text-center">
                             <Link
-                                href="/"
+                                href={siteUrl}
                                 className="inline-flex items-center gap-2 text-xs font-medium text-slate-500 transition hover:text-slate-300"
                             >
                                 <ArrowLeftIcon className="h-3.5 w-3.5" />
