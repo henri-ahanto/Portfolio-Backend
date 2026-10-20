@@ -23,6 +23,7 @@ class SkillCategoryFactory extends Factory
             'accent' => fake()->randomElement(['python', 'laravel', 'php', 'yellow']),
             'skills' => ['PHP', 'Laravel'],
             'sort_order' => 0,
+            'published' => true,
         ];
     }
 }

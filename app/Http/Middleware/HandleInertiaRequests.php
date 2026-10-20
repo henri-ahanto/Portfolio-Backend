@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ContactMessage;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -35,11 +36,28 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
+            'siteUrl' => config('portfolio.frontend_url'),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user === null ? null : [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'is_admin' => $user->is_admin,
+                ],
+            ],
+            'flash' => [
+                'success' => fn (): ?string => $request->session()->get('success'),
+                'error' => fn (): ?string => $request->session()->get('error'),
+            ],
+            'admin' => [
+                'unreadMessages' => fn (): int => $user?->is_admin
+                    ? ContactMessage::query()->unread()->count()
+                    : 0,
             ],
         ];
     }

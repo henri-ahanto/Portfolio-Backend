@@ -23,6 +23,7 @@ class ContactMessageFactory extends Factory
             'message' => fake()->paragraph(),
             'ip_address' => fake()->ipv4(),
             'user_agent' => fake()->userAgent(),
+            'read_at' => null,
         ];
     }
 }

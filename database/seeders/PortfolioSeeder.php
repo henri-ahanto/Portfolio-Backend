@@ -34,7 +34,7 @@ class PortfolioSeeder extends Seeder
                 'location' => 'Lokossa / Cotonou, Bénin',
                 'email' => 'ahantohenrisylvain@gmail.com',
                 'phones' => ['+229 01 53 46 58 49', '+229 01 44 08 14 98'],
-                'availability' => 'Ouvert aux opportunités CDI & Freelance',
+                'availability' => 'Ouvert aux opportunités CDI, CDD & Freelance',
                 'bio' => [
                     'Développeur web fullstack passionné, diplômé en Informatique et Télécommunications (INSTI, 2026) et actuellement en stage professionnel chez WaohDigital.',
                     'Fort d\'une expertise en conception logicielle, je conçois des applications robustes et évolutives. Mon profil polyvalent me permet d\'intervenir sur toutes les couches d\'un projet : frontend, backend, base de données et intelligence artificielle.',

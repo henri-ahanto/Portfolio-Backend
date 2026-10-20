@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\ClearsPortfolioCache;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $accent
  * @property string $snippet
  * @property int $sort_order
+ * @property bool $published
  */
 #[Fillable([
     'title',
@@ -29,11 +32,12 @@ use Illuminate\Database\Eloquent\Model;
     'accent',
     'snippet',
     'sort_order',
+    'published',
 ])]
 class Project extends Model
 {
     /** @use HasFactory<ProjectFactory> */
-    use HasFactory;
+    use ClearsPortfolioCache, HasFactory;
 
     /**
      * Get the attributes that should be cast.
@@ -44,6 +48,18 @@ class Project extends Model
     {
         return [
             'tags' => 'array',
+            'published' => 'boolean',
         ];
+    }
+
+    /**
+     * Limit the query to published projects.
+     *
+     * @param  Builder<Project>  $query
+     * @return Builder<Project>
+     */
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('published', true);
     }
 }

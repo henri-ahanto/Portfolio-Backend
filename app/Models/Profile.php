@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\ClearsPortfolioCache;
 use Database\Factories\ProfileFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -47,7 +48,7 @@ use Illuminate\Database\Eloquent\Model;
 class Profile extends Model
 {
     /** @use HasFactory<ProfileFactory> */
-    use HasFactory;
+    use ClearsPortfolioCache, HasFactory;
 
     /**
      * Get the attributes that should be cast.

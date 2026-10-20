@@ -27,6 +27,7 @@ class ProjectFactory extends Factory
             'accent' => fake()->randomElement(['python', 'laravel', 'php', 'yellow']),
             'snippet' => '$ php artisan serve',
             'sort_order' => 0,
+            'published' => true,
         ];
     }
 }

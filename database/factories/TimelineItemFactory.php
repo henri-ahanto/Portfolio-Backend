@@ -25,6 +25,7 @@ class TimelineItemFactory extends Factory
             'type' => fake()->randomElement(['work', 'education']),
             'current' => false,
             'sort_order' => 0,
+            'published' => true,
         ];
     }
 }
